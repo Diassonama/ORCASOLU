@@ -1,31 +1,71 @@
-<main class="login-page">
-  <section class="login-card">
-    <h1>SqlFlo Orçamento</h1>
-    <p>Gestão robusta de orçamento para impressão.</p>
+<main class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+    
+    <div class="text-center">
+      <div class="mx-auto h-16 w-16 bg-blue-600 dark:bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
+        <svg class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zm0 10l-10 5 10 5 10-5-10-5z" />
+        </svg>
+      </div>
+      <h2 class="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">SqlFlo Orçamento</h2>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Gestão robusta de orçamento para impressão.</p>
+    </div>
 
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <label>
-        Email
-        <input type="email" formControlName="email" placeholder="seu@email.com" />
-        <small class="field-error" *ngIf="form.controls.email.touched && form.controls.email.invalid">
-          Informe um email válido.
-        </small>
-      </label>
+    <form class="mt-8 space-y-6" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="space-y-4 rounded-md shadow-sm">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+          <input 
+            id="email" 
+            type="email" 
+            formControlName="email" 
+            placeholder="seu@email.com" 
+            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors"
+            [class.border-red-500]="form.controls.email.touched && form.controls.email.invalid"
+          />
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400" *ngIf="form.controls.email.touched && form.controls.email.invalid">Informe um email válido.</p>
+        </div>
 
-      <label>
-        Senha
-        <input type="password" formControlName="password" placeholder="••••••••" />
-        <small class="field-error" *ngIf="form.controls.password.touched && form.controls.password.invalid">
-          A senha deve ter pelo menos 4 caracteres.
-        </small>
-      </label>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Senha</label>
+          <input 
+            id="password" 
+            type="password" 
+            formControlName="password" 
+            placeholder="••••••••" 
+            class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors"
+            [class.border-red-500]="form.controls.password.touched && form.controls.password.invalid"
+          />
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400" *ngIf="form.controls.password.touched && form.controls.password.invalid">A senha deve ter pelo menos 4 caracteres.</p>
+        </div>
+      </div>
 
-      <button type="submit" [disabled]="loading()">
-        {{ loading() ? 'Entrando...' : 'Entrar' }}
-      </button>
+      <div *ngIf="errorMessage()" class="p-3 rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800">
+        <p class="text-sm text-red-600 dark:text-red-400 text-center">{{ errorMessage() }}</p>
+      </div>
+
+      <div>
+        <button 
+          type="submit" 
+          [disabled]="loading()"
+          class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
+        >
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg *ngIf="!loading()" class="h-5 w-5 text-blue-500 group-hover:text-blue-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg>
+            <svg *ngIf="loading()" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+          {{ loading() ? 'Autenticando...' : 'Entrar no Sistema' }}
+        </button>
+      </div>
     </form>
 
-    <small class="hint">Use uma conta válida do backend em `api/Auth/login`.</small>
-    <small class="error" *ngIf="errorMessage()">{{ errorMessage() }}</small>
-  </section>
+    <div class="mt-6 text-center">
+      <small class="text-gray-500 dark:text-gray-400">Use uma conta válida do backend em <code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">api/Auth/login</code>.</small>
+    </div>
+  </div>
 </main>

@@ -1,51 +1,108 @@
-<section class="list-page">
-  <h1>Categorias</h1>
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8 flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Categorias</h1>
+  </div>
 
-  <form class="crud-form" [formGroup]="form" (ngSubmit)="submit()">
-    <label>
-      Nome
-      <input formControlName="nome" type="text" placeholder="Nome da categoria" />
-      <small class="field-error" *ngIf="form.controls.nome.touched && form.controls.nome.invalid">
-        Nome é obrigatório e deve ter ao menos 2 caracteres.
-      </small>
-    </label>
-
-    <label>
-      Descrição
-      <input formControlName="descricao" type="text" placeholder="Descrição" />
-    </label>
-
-    <div class="form-actions">
-      <button type="submit" [disabled]="saving()">
-        {{ saving() ? 'Salvando...' : editingId() ? 'Atualizar' : 'Criar' }}
-      </button>
-      <button type="button" class="secondary" *ngIf="editingId()" (click)="cancelEdit()">Cancelar</button>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-8 border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">
+        {{ editingId() ? 'Editar Categoria' : 'Nova Categoria' }}
+      </h3>
     </div>
-  </form>
 
-  <table *ngIf="!loading() && categorias().length > 0; else fallback">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Descrição</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let categoria of categorias()">
-        <td>#{{ categoria.id }}</td>
-        <td>{{ categoria.nome }}</td>
-        <td>{{ categoria.descricao || '-' }}</td>
-        <td class="actions">
-          <button type="button" class="secondary" (click)="startEdit(categoria)">Editar</button>
-          <button type="button" class="danger" (click)="delete(categoria)">Excluir</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="p-6">
+      <form class="space-y-6 max-w-2xl" [formGroup]="form" (ngSubmit)="submit()">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome</label>
+          <input
+            type="text"
+            formControlName="nome"
+            placeholder="Ex: CONVENCIONAIS"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm px-4 py-2 border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            [class.border-red-500]="form.controls.nome.touched && form.controls.nome.invalid"
+          />
+          <p class="mt-1 text-sm text-red-600 dark:text-red-400" *ngIf="form.controls.nome.touched && form.controls.nome.invalid">
+            Nome é obrigatório e deve ter ao menos 2 caracteres.
+          </p>
+        </div>
 
-  <ng-template #fallback>
-    <p>{{ loading() ? 'Carregando categorias...' : 'Nenhuma categoria cadastrada.' }}</p>
-  </ng-template>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descrição</label>
+          <input
+            type="text"
+            formControlName="descricao"
+            placeholder="Descrição opcional"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm px-4 py-2 border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button
+            type="submit"
+            [disabled]="saving()"
+            class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {{ saving() ? 'Salvando...' : editingId() ? 'Salvar Alterações' : 'Criar Categoria' }}
+          </button>
+          <button
+            type="button"
+            *ngIf="editingId()"
+            (click)="cancelEdit()"
+            class="inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" *ngIf="!loading() && categorias().length > 0; else fallback">
+        <thead class="bg-gray-50 dark:bg-gray-700/50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nome</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Descrição</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+          <tr *ngFor="let categoria of categorias()" class="even:bg-gray-50/50 odd:bg-white dark:even:bg-gray-800/80 dark:odd:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#{{ categoria.id }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-gray-100">{{ categoria.nome }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ categoria.descricao || '-' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <button
+                type="button"
+                (click)="startEdit(categoria)"
+                class="inline-flex items-center justify-center p-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-400 dark:hover:bg-indigo-900/60 rounded-lg transition-colors mr-2"
+                title="Editar"
+              >
+                <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+              </button>
+              <button
+                type="button"
+                (click)="delete(categoria)"
+                class="inline-flex items-center justify-center p-2 bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-400 dark:hover:bg-red-900/60 rounded-lg transition-colors"
+                title="Excluir"
+              >
+                <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #fallback>
+      <div class="px-6 py-12 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ loading() ? 'Carregando categorias...' : 'Nenhuma categoria cadastrada.' }}</p>
+      </div>
+    </ng-template>
+  </div>
 </section>
