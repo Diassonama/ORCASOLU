@@ -1,0 +1,114 @@
+<section class="list-page">
+  <h1>Ordens de Produção</h1>
+
+  <form class="crud-form" [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Nº Produto
+      <input type="text" formControlName="numProduto" />
+    </label>
+    <label>
+      Produto
+      <select formControlName="produtoId">
+        <option [ngValue]="null">Selecione...</option>
+        <option *ngFor="let produto of produtos()" [ngValue]="produto.id">{{ produto.nome }} (#{{ produto.id }})</option>
+      </select>
+      <small class="field-error" *ngIf="form.controls.produtoId.touched && form.controls.produtoId.invalid">
+        Produto é obrigatório.
+      </small>
+    </label>
+    <label>
+      SubProduto
+      <select formControlName="subProdutoId">
+        <option [ngValue]="null">
+          {{ form.controls.produtoId.value ? 'Selecione...' : 'Selecione um produto primeiro' }}
+        </option>
+        <option *ngFor="let item of filteredSubProdutos()" [ngValue]="item.id">{{ item.nome }} (#{{ item.id }})</option>
+      </select>
+      <small class="field-hint" *ngIf="!form.controls.produtoId.value">
+        Escolha um produto para habilitar os subprodutos.
+      </small>
+      <small class="field-error" *ngIf="form.controls.produtoId.value && form.controls.subProdutoId.touched && form.controls.subProdutoId.invalid">
+        SubProduto é obrigatório.
+      </small>
+    </label>
+    <label>
+      Tipo Impressão
+      <select formControlName="tipoImpressaoId">
+        <option [ngValue]="null">Selecione...</option>
+        <option *ngFor="let tipo of tiposImpressao()" [ngValue]="tipo.id">{{ tipo.nome }}</option>
+      </select>
+    </label>
+    <label>
+      Quantidade
+      <input type="number" formControlName="quantidade" />
+      <small class="field-error" *ngIf="form.controls.quantidade.touched && form.controls.quantidade.invalid">
+        Quantidade não pode ser negativa.
+      </small>
+    </label>
+    <label>
+      Ref. Interna
+      <input type="text" formControlName="refInterna" />
+    </label>
+    <label>
+      Nº Páginas
+      <input type="number" formControlName="nrPaginas" />
+      <small class="field-error" *ngIf="form.controls.nrPaginas.touched && form.controls.nrPaginas.invalid">
+        Nº de páginas não pode ser negativo.
+      </small>
+    </label>
+    <label>
+      Formato
+      <input type="text" formControlName="formato" />
+    </label>
+    <label>
+      Total Técnicos
+      <input type="number" formControlName="totalNrTecnicos" />
+      <small class="field-error" *ngIf="form.controls.totalNrTecnicos.touched && form.controls.totalNrTecnicos.invalid">
+        Total de técnicos não pode ser negativo.
+      </small>
+    </label>
+    <label>
+      Observações
+      <input type="text" formControlName="notasObservacoes" />
+    </label>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="saving()">
+        {{ saving() ? 'Salvando...' : editingId() ? 'Atualizar' : 'Criar' }}
+      </button>
+      <button type="button" class="secondary" *ngIf="editingId()" (click)="cancelEdit()">Cancelar</button>
+    </div>
+  </form>
+
+  <table *ngIf="!loading() && ordens().length > 0; else fallback">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Páginas</th>
+        <th>Formato</th>
+        <th>Ref. Interna</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ordem of ordens()">
+        <td>#{{ ordem.id }}</td>
+        <td>{{ ordem.numProduto || ordem.subProdutoNome || subProdutoLabel(ordem.subProdutoId) }}</td>
+        <td>{{ ordem.quantidade || 0 }}</td>
+        <td>{{ ordem.nrPaginas || 0 }}</td>
+        <td>{{ ordem.formato || '-' }}</td>
+        <td>{{ ordem.refInterna || '-' }}</td>
+        <td class="actions">
+          <button type="button" class="secondary" (click)="startEdit(ordem)">Editar</button>
+          <button type="button" class="danger" (click)="delete(ordem)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #fallback>
+    <p>{{ loading() ? 'Carregando ordens...' : 'Nenhuma ordem cadastrada.' }}</p>
+  </ng-template>
+</section>

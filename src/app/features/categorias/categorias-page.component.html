@@ -1,0 +1,51 @@
+<section class="list-page">
+  <h1>Categorias</h1>
+
+  <form class="crud-form" [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Nome
+      <input formControlName="nome" type="text" placeholder="Nome da categoria" />
+      <small class="field-error" *ngIf="form.controls.nome.touched && form.controls.nome.invalid">
+        Nome é obrigatório e deve ter ao menos 2 caracteres.
+      </small>
+    </label>
+
+    <label>
+      Descrição
+      <input formControlName="descricao" type="text" placeholder="Descrição" />
+    </label>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="saving()">
+        {{ saving() ? 'Salvando...' : editingId() ? 'Atualizar' : 'Criar' }}
+      </button>
+      <button type="button" class="secondary" *ngIf="editingId()" (click)="cancelEdit()">Cancelar</button>
+    </div>
+  </form>
+
+  <table *ngIf="!loading() && categorias().length > 0; else fallback">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let categoria of categorias()">
+        <td>#{{ categoria.id }}</td>
+        <td>{{ categoria.nome }}</td>
+        <td>{{ categoria.descricao || '-' }}</td>
+        <td class="actions">
+          <button type="button" class="secondary" (click)="startEdit(categoria)">Editar</button>
+          <button type="button" class="danger" (click)="delete(categoria)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #fallback>
+    <p>{{ loading() ? 'Carregando categorias...' : 'Nenhuma categoria cadastrada.' }}</p>
+  </ng-template>
+</section>

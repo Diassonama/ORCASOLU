@@ -1,0 +1,31 @@
+<main class="login-page">
+  <section class="login-card">
+    <h1>SqlFlo Orçamento</h1>
+    <p>Gestão robusta de orçamento para impressão.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        Email
+        <input type="email" formControlName="email" placeholder="seu@email.com" />
+        <small class="field-error" *ngIf="form.controls.email.touched && form.controls.email.invalid">
+          Informe um email válido.
+        </small>
+      </label>
+
+      <label>
+        Senha
+        <input type="password" formControlName="password" placeholder="••••••••" />
+        <small class="field-error" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+          A senha deve ter pelo menos 4 caracteres.
+        </small>
+      </label>
+
+      <button type="submit" [disabled]="loading()">
+        {{ loading() ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </form>
+
+    <small class="hint">Use uma conta válida do backend em `api/Auth/login`.</small>
+    <small class="error" *ngIf="errorMessage()">{{ errorMessage() }}</small>
+  </section>
+</main>

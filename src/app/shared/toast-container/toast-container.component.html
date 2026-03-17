@@ -1,0 +1,12 @@
+<section class="toast-stack">
+  <article
+    *ngFor="let toast of toastService.messages()"
+    class="toast"
+    [class.success]="toast.type === 'success'"
+    [class.error]="toast.type === 'error'"
+    [class.info]="toast.type === 'info'"
+  >
+    <span>{{ toast.message }}</span>
+    <button type="button" (click)="toastService.remove(toast.id)">✕</button>
+  </article>
+</section>

@@ -1,0 +1,64 @@
+<section class="list-page">
+  <h1>Produtos</h1>
+
+  <form class="crud-form" [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Categoria
+      <select formControlName="categoriaId">
+        <option [ngValue]="null">Selecione...</option>
+        <option *ngFor="let categoria of categorias()" [ngValue]="categoria.id">{{ categoria.nome }}</option>
+      </select>
+      <small class="field-error" *ngIf="form.controls.categoriaId.touched && form.controls.categoriaId.invalid">
+        Categoria é obrigatória.
+      </small>
+    </label>
+
+    <label>
+      Nome
+      <input formControlName="nome" type="text" placeholder="Nome do produto" />
+      <small class="field-error" *ngIf="form.controls.nome.touched && form.controls.nome.invalid">
+        Nome é obrigatório e deve ter ao menos 2 caracteres.
+      </small>
+    </label>
+
+    <label>
+      Descrição
+      <input formControlName="descricao" type="text" placeholder="Descrição" />
+    </label>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="saving()">
+        {{ saving() ? 'Salvando...' : editingId() ? 'Atualizar' : 'Criar' }}
+      </button>
+      <button type="button" class="secondary" *ngIf="editingId()" (click)="cancelEdit()">Cancelar</button>
+    </div>
+  </form>
+
+  <table *ngIf="!loading() && produtos().length > 0; else fallback">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let produto of produtos()">
+        <td>#{{ produto.id }}</td>
+        <td>{{ produto.nome }}</td>
+        <td>{{ produto.categoriaNome || produto.categoriaId }}</td>
+        <td>{{ produto.descricao || '-' }}</td>
+        <td class="actions">
+          <button type="button" class="secondary" (click)="startEdit(produto)">Editar</button>
+          <button type="button" class="danger" (click)="delete(produto)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #fallback>
+    <p>{{ loading() ? 'Carregando produtos...' : 'Nenhum produto cadastrado.' }}</p>
+  </ng-template>
+</section>

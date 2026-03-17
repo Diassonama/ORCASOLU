@@ -1,0 +1,250 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  background-color: var(--bg-body);
+}
+
+.sidebar {
+  background: #0f172a;
+  color: #fff;
+  padding: 1.5rem 1rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.shell.collapsed .sidebar {
+  width: 72px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  color: #38bdf8;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.shell.collapsed .brand-text {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+nav a {
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+}
+
+.shell.collapsed a {
+  padding: 0.75rem;
+  justify-content: center;
+}
+
+.shell.collapsed .menu-text {
+  opacity: 0;
+  width: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+}
+
+nav a.active,
+nav a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.shell:not(.collapsed) nav a:hover {
+  transform: translateX(4px);
+}
+
+.toggle-sidebar-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #94a3b8;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  transition: var(--transition);
+}
+
+.toggle-sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.topbar {
+  background: var(--bg-surface);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-info strong {
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.user-info small {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+main {
+  padding: 2rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.menu-btn {
+  background: transparent;
+  color: var(--text-main);
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  display: none;
+}
+
+.menu-btn:hover {
+  background: var(--secondary);
+  transform: none;
+}
+
+.logout {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  background-color: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  white-space: nowrap;
+}
+
+.logout:hover {
+  background-color: var(--danger);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    left: -280px;
+    z-index: 40;
+    width: 250px;
+  }
+
+  .shell.collapsed .sidebar {
+    width: 250px;
+  }
+
+  .toggle-sidebar-btn {
+    display: none;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .shell.collapsed .brand-text,
+  .shell.collapsed .menu-text {
+    opacity: 1;
+    visibility: visible;
+    width: auto;
+  }
+
+  .menu-btn {
+    display: inline-flex;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 30;
+  }
+
+  main {
+    padding: 1rem;
+  }
+}
