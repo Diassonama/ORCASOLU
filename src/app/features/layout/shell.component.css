@@ -4,6 +4,11 @@
   display: flex;
   background-color: var(--bg-body, #f8fafc);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+:host-context(.dark) .shell {
+  background-color: #0f172a; /* nice dark tailwind background */
 }
 
 .sidebar {

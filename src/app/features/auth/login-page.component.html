@@ -1,13 +1,13 @@
 <main class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
-    
+
     <div class="text-center">
       <div class="mx-auto h-16 w-16 bg-blue-600 dark:bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
         <svg class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zm0 10l-10 5 10 5 10-5-10-5z" />
         </svg>
       </div>
-      <h2 class="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">SqlFlo Orçamento</h2>
+      <h2 class="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">ORÇA-SOLU</h2>
       <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Gestão robusta de orçamento para impressão.</p>
     </div>
 
@@ -15,11 +15,11 @@
       <div class="space-y-4 rounded-md shadow-sm">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-          <input 
-            id="email" 
-            type="email" 
-            formControlName="email" 
-            placeholder="seu@email.com" 
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="seu@email.com"
             class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors"
             [class.border-red-500]="form.controls.email.touched && form.controls.email.invalid"
           />
@@ -28,11 +28,11 @@
 
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Senha</label>
-          <input 
-            id="password" 
-            type="password" 
-            formControlName="password" 
-            placeholder="••••••••" 
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
             class="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors"
             [class.border-red-500]="form.controls.password.touched && form.controls.password.invalid"
           />
@@ -45,8 +45,8 @@
       </div>
 
       <div>
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           [disabled]="loading()"
           class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
         >
@@ -64,8 +64,8 @@
       </div>
     </form>
 
-    <div class="mt-6 text-center">
+    <!-- <div class="mt-6 text-center">
       <small class="text-gray-500 dark:text-gray-400">Use uma conta válida do backend em <code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">api/Auth/login</code>.</small>
-    </div>
+    </div> -->
   </div>
 </main>

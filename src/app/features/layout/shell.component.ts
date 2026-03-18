@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { AuthService } from '../../core/services/auth.service';
@@ -11,9 +11,10 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.css'
 })
-export class ShellComponent {
+export class ShellComponent implements OnInit {
   readonly menuOpen = signal(false);
   readonly sidebarExpanded = signal(true);
+  readonly isDarkMode = signal(false);
 
   readonly menuItems = [
     { label: 'Dashboard', route: '/dashboard', icon: 'dashboard' },
@@ -35,6 +36,29 @@ export class ShellComponent {
   ];
 
   constructor(public readonly authService: AuthService) {}
+
+  ngOnInit(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      this.isDarkMode.set(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      this.isDarkMode.set(false);
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  toggleTheme(): void {
+    if (this.isDarkMode()) {
+      this.isDarkMode.set(false);
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      this.isDarkMode.set(true);
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
 
   toggleMenu(): void {
     this.menuOpen.update((isOpen) => !isOpen);

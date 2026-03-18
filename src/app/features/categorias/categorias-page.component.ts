@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Categoria, CreateCategoriaPayload } from '../../core/models/budget.models';
@@ -15,6 +15,48 @@ import { ToastService } from '../../core/services/toast.service';
 })
 export class CategoriasPageComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
+
+  Math = Math;
+  showModal = signal(false);
+  searchTerm = signal('');
+  currentPage = signal(1);
+  pageSize = 10;
+
+  filteredItems = computed(() => {
+    let result = this.categorias() || [];
+    const term = this.searchTerm().toLowerCase();
+    if (term) {
+      result = result.filter(item => Object.values(item).some(v => String(v).toLowerCase().includes(term)));
+    }
+    return result;
+  });
+
+  paginatedItems = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    return this.filteredItems().slice(start, start + this.pageSize);
+  });
+
+  openModal() {
+    this.cancelEdit();
+    this.showModal.set(true);
+  }
+
+  closeModal() {
+    this.showModal.set(false);
+    this.cancelEdit();
+  }
+
+  nextPage() {
+    if (this.currentPage() * this.pageSize < this.filteredItems().length) {
+      this.currentPage.update(p => p + 1);
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage() > 1) {
+      this.currentPage.update(p => p - 1);
+    }
+  }
 
   readonly loading = signal(true);
   readonly saving = signal(false);

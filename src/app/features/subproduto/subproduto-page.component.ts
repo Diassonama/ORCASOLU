@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -28,6 +28,48 @@ export class SubProdutoPageComponent implements OnInit {
   loading = signal(false);
   form!: FormGroup;
   editingId = signal<number | null>(null);
+
+    Math = Math;
+  showModal = signal(false);
+  searchTerm = signal('');
+  currentPage = signal(1);
+  pageSize = 10;
+
+  filteredItems = computed(() => {
+    let result = this.items() || [];
+    const term = this.searchTerm().toLowerCase();
+    if (term) {
+      result = result.filter(item => Object.values(item).some(v => String(v).toLowerCase().includes(term)));
+    }
+    return result;
+  });
+
+  paginatedItems = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    return this.filteredItems().slice(start, start + this.pageSize);
+  });
+
+  openModal() {
+    this.resetForm();
+    this.showModal.set(true);
+  }
+
+  closeModal() {
+    this.showModal.set(false);
+    this.resetForm();
+  }
+
+  nextPage() {
+    if (this.currentPage() * this.pageSize < this.filteredItems().length) {
+      this.currentPage.update(p => p + 1);
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage() > 1) {
+      this.currentPage.update(p => p - 1);
+    }
+  }
 
   constructor() {
     this.form = this.fb.group({
@@ -66,7 +108,7 @@ export class SubProdutoPageComponent implements OnInit {
       this.http.put(`${this.apiUrl}/${id}`, val).subscribe({
         next: () => {
           this.toast.success('Editado com sucesso');
-          this.resetForm();
+          this.closeModal();
           this.loadData();
         },
         error: () => {
@@ -78,7 +120,7 @@ export class SubProdutoPageComponent implements OnInit {
       this.http.post(this.apiUrl, val).subscribe({
         next: () => {
           this.toast.success('Criado com sucesso');
-          this.resetForm();
+          this.closeModal();
           this.loadData();
         },
         error: () => {
@@ -92,7 +134,7 @@ export class SubProdutoPageComponent implements OnInit {
   startEdit(item: SubProduto): void {
     this.editingId.set(item.id);
     this.form.patchValue(item);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.showModal.set(true);
   }
 
   delete(item: SubProduto): void {
