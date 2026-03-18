@@ -1,4 +1,8 @@
+const fs = require('fs');
+const path = 'src/app/features/layout/shell.component.css';
+let css = fs.readFileSync(path, 'utf8');
 
+const newCSS = `
 .shell {
   min-height: 100vh;
   display: flex;
@@ -298,3 +302,7 @@ main {
     padding: 1.25rem;
   }
 }
+`;
+
+fs.writeFileSync(path, newCSS);
+console.log('CSS updated');

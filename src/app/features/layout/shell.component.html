@@ -1,10 +1,16 @@
 <div class="shell" [class.collapsed]="!sidebarExpanded()">
   <aside class="sidebar" [class.open]="menuOpen()">
     <div class="brand">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="url(#BrandGradient)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="BrandGradient" x1="2" y1="2" x2="22" y2="12" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#38bdf8"/>
+            <stop offset="1" stop-color="#818cf8"/>
+          </linearGradient>
+        </defs>
       </svg>
       <span class="brand-text">ORÇA-SOLU</span>
     </div>
@@ -52,11 +58,17 @@
       </div>
 
       <div class="topbar-right">
-        <div class="user-info">
-          <strong>{{ authService.currentSession()?.fullName || 'Usuário' }}</strong>
-          <small>{{ authService.currentSession()?.email }}</small>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-800 font-bold text-xl shrink-0">
+            {{ (authService.currentSession()?.fullName || 'J')[0] | uppercase }}
+          </div>
+          <div class="flex flex-col text-left justify-center">
+            <span class="text-lg font-medium text-black dark:text-white leading-none">{{ authService.currentSession()?.fullName || 'Joao macondo' }}</span>
+            <span class="text-base text-black dark:text-gray-300 leading-tight mt-1">{{ authService.currentSession()?.email || 'joaomacondo@gmail.com' }}</span>
+          </div>
         </div>
-        <button class="logout" (click)="logout()">Sair</button>
+
+        <button class="logout ml-5 hover:shadow-lg hover:shadow-red-500/30" (click)="logout()">Sair</button>
       </div>
     </header>
 

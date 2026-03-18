@@ -22,7 +22,7 @@ export class SubProdutoPageComponent implements OnInit {
   private http = inject(HttpClient);
   private fb = inject(FormBuilder);
   private toast = inject(ToastService);
-  private apiUrl = `${environment.apiBaseUrl}/SubProduto`;
+  private apiUrl = `${environment.apiBaseUrl}/SubProdutos`;
 
   items = signal<SubProduto[]>([]);
   loading = signal(false);
