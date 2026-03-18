@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:5115/api'
+  apiBaseUrl: 'https://api.orcasalu.hospedyn.com/api'
 };
 
 /*
