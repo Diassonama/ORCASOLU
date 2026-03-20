@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { AuthResponse, LoginRequest, UserSession } from '../models/auth.models';
+import { Router } from '@angular/router';
 
 const SESSION_KEY = 'sqlflo.session';
 
@@ -14,7 +15,7 @@ export class AuthService {
 
   readonly currentSession = this.currentSessionSignal.asReadonly();
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient, private routerCtrl: Router) {}
 
   login(payload: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/login`, payload).pipe(
@@ -33,7 +34,10 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(SESSION_KEY);
+    localStorage.clear();
     this.currentSessionSignal.set(null);
+     this.routerCtrl.navigateByUrl('/login');
+
   }
 
   getToken(): string | null {
